@@ -1,3 +1,5 @@
 <div class="starColor">
-    <fa-icon *ngFor="let starType of stars" [icon]="starType"></fa-icon>
-</div>
+        @for (starType of stars; track $index) {
+        <fa-icon [icon]="starType"></fa-icon>
+    }
+    </div>

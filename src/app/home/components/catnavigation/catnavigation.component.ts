@@ -1,4 +1,6 @@
-import {Component} from '@angular/core'
+import {Component, DestroyRef, inject} from '@angular/core'
+import { Category } from '../../../shared/types/category.type'
+import { CategoryService } from '../../services/category.service'
 
 @Component({
   selector: 'app-catnavigation',
@@ -7,4 +9,8 @@ import {Component} from '@angular/core'
   templateUrl: './catnavigation.component.html',
   styleUrl: './catnavigation.component.scss',
 })
-export class CatnavigationComponent {}
+export class CatnavigationComponent {
+  categories: Category[] = []
+  categoryService = inject(CategoryService)
+  private destroyRef = inject(DestroyRef)
+}
