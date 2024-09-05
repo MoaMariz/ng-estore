@@ -1,26 +1,27 @@
-import {Component, DestroyRef, inject, OnInit} from '@angular/core'
+import {Component, DestroyRef, inject, OnDestroy, OnInit} from '@angular/core'
 import {Category} from '../../../shared/types/category.type'
-import {CategoryService} from '../../services/category.service'
-import {NgFor} from '@angular/common'
+import {CategoriesStoreItem} from '../../services/categoriesStoreItem.service'
+import {CommonModule} from '@angular/common'
+import {RouterLink} from '@angular/router'
 
 @Component({
   selector: 'app-sidenavigation',
   standalone: true,
-  imports: [NgFor],
+  imports: [CommonModule, RouterLink],
   templateUrl: './sidenavigation.component.html',
   styleUrl: './sidenavigation.component.scss',
 })
 export class SidenavigationComponent implements OnInit {
   categories: Category[] = []
-  categoryService = inject(CategoryService)
+  categoriesStoreItem = inject(CategoriesStoreItem)
   private destroyRef = inject(DestroyRef)
 
   ngOnInit() {
-    const subscription = this.categoryService
-      .getAllCategories()
-      .subscribe((categories) => {
+    const subscription = this.categoriesStoreItem.categories$.subscribe(
+      (categories) => {
         this.categories = categories
-      })
+      }
+    )
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe()

@@ -1,8 +1,11 @@
 <div class="navigation-container">
   <ul>
-    <li><a href="#">Men</a></li>
-    <li><a href="#">Women</a></li>
-    <li><a href="#">Kids</a></li>
-    <li><a href="#">Offers</a></li>
+    <li><a href="#">Home</a></li>
+    @for (category of categoriesStoreItem.topLevelCategories$ | async; track
+    category.id) {
+    <li>
+      <a href="#">{{ category.category }}</a>
+    </li>
+    }
   </ul>
 </div>

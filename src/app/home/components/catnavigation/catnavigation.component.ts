@@ -1,16 +1,14 @@
-import {Component, DestroyRef, inject} from '@angular/core'
-import { Category } from '../../../shared/types/category.type'
-import { CategoryService } from '../../services/category.service'
+import {Component, DestroyRef, inject, OnInit} from '@angular/core'
+import {CategoriesStoreItem} from '../../services/categoriesStoreItem.service'
+import {AsyncPipe} from '@angular/common'
 
 @Component({
   selector: 'app-catnavigation',
   standalone: true,
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './catnavigation.component.html',
   styleUrl: './catnavigation.component.scss',
 })
 export class CatnavigationComponent {
-  categories: Category[] = []
-  categoryService = inject(CategoryService)
-  private destroyRef = inject(DestroyRef)
+  categoriesStoreItem = inject(CategoriesStoreItem)
 }
