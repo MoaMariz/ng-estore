@@ -1,14 +1,28 @@
-import {Injectable} from '@angular/core'
-import {ProductListItem} from '../../shared/types/products.type'
-import {products} from '../../shared/data/products.data'
+import {inject, Injectable} from '@angular/core'
+import {Product} from '../../shared/types/products.type'
+import {HttpClient} from '@angular/common/http'
+import {catchError, Observable, throwError} from 'rxjs'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor() {}
+  private httpClient = inject(HttpClient)
 
-  getProductsList(): ProductListItem[] {
-    return products
+  getAllProducts(query?: string): Observable<Product[]> {
+    let url: string = 'http://localhost:5001/products'
+    if  (query) {
+      url += '?' + query
+    }
+    return this.httpClient
+      .get<Product[]>(url)
+      .pipe(
+        catchError((error) => {
+          console.log(error)
+          return throwError(
+            () => new Error('Something went wrong fetching categories.')
+          )
+        })
+      )
   }
 }
