@@ -6,6 +6,8 @@ import {ProductsComponent} from './components/products/products.component'
 import {CategoriesStoreItem} from './services/categoriesStoreItem.service'
 import {ProductStoreItem} from './services/productsStoreItem.service'
 import {ProductsService} from './services/products.service'
+import {SearchKeyword} from '../shared/types/searchKeyword.type'
+import { RouterOutlet } from '@angular/router'
 
 @Component({
   selector: 'app-home',
@@ -15,6 +17,7 @@ import {ProductsService} from './services/products.service'
     CatnavigationComponent,
     SidenavigationComponent,
     ProductsComponent,
+    RouterOutlet
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -29,7 +32,16 @@ export class HomeComponent implements OnInit {
     this.productStoreItem.loadProducts()
   }
 
-  onSelectSubCategory(subCategoryId: number): void {
-    this.productStoreItem.loadProducts('subcategoryid=' + subCategoryId)
+  onSelectCategory(categoryId: number): void {
+    this.productStoreItem.loadProducts('maincategoryid=' + categoryId)
+  }
+
+  onSearchKeyword(searchKeyword: SearchKeyword): void {
+    this.productStoreItem.loadProducts(
+      'maincategoryid=' +
+        searchKeyword.categoryId +
+        '&keyword=' +
+        searchKeyword.keyword
+    )
   }
 }

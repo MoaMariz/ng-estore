@@ -1,9 +1,14 @@
-import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { NotFoundComponent } from './shared/not-found/not-found.component';
+import {Routes} from '@angular/router'
+import {NotFoundComponent} from './shared/not-found/not-found.component'
+import { routes as homeRoutes } from './home/home.routes'
 
 export const routes: Routes = [
-    {path: 'home', component: HomeComponent},
-    {path: '', redirectTo: '/home', pathMatch: 'full'},
-    {path: '**', component: NotFoundComponent}
-];
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./home/home.component').then((mod) => mod.HomeComponent),
+    children: homeRoutes
+  },
+  {path: '', redirectTo: '/home/products', pathMatch: 'full'},
+  {path: '**', component: NotFoundComponent},
+]

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core'
+import {Component, inject, EventEmitter, Output} from '@angular/core'
 import {
   faSearch,
   faUserCircle,
@@ -8,6 +8,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 import {RouterLink} from '@angular/router'
 import {CategoriesStoreItem} from '../../services/categoriesStoreItem.service'
 import {AsyncPipe} from '@angular/common'
+import {SearchKeyword} from '../../../shared/types/searchKeyword.type'
 
 @Component({
   selector: 'app-header',
@@ -21,4 +22,13 @@ export class HeaderComponent {
   faUserCircle = faUserCircle
   faShoppingCart = faShoppingCart
   categoriesStoreItem = inject(CategoriesStoreItem)
+  @Output()
+  searchClicked: EventEmitter<SearchKeyword> = new EventEmitter<SearchKeyword>()
+
+  onClickSearch(keyword: string, categoryId: string): void {
+    this.searchClicked.emit({
+      categoryId: parseInt(categoryId),
+      keyword: keyword,
+    })
+  }
 }
