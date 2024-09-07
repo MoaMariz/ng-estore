@@ -5,24 +5,28 @@
     </div>
 
     <div class="p-0 my-4 w-50 h-25 bg-white">
-      <select #categoryOptions class="dropdown p-0 m-0" name="dropdown">
-        @for (category of categoriesStoreItem.topLevelCategories$ | async ;
-        track category.id) {
-        <option value="{{ category.id }}">{{ category.category }}</option>
-        }
-      </select>
-      <input
-        #keyword
-        class="form-control search-box"
-        placeholder="Search.."
-        name="search-box"
-      />
-      <button
-        (click)="onClickSearch(keyword.value, categoryOptions.value)"
-        class="search-button"
-      >
-        <fa-icon [icon]="faSearch"></fa-icon>
-      </button>
+      @if (navigationSearch){
+        <ng-container>
+          <select #categoryOptions class="dropdown p-0 m-0" name="dropdown">
+            @for (category of categoriesStoreItem.topLevelCategories$ | async ;
+            track category.id) {
+            <option value="{{ category.id }}">{{ category.category }}</option>
+            }
+          </select>
+          <input
+            #keyword
+            class="form-control search-box"
+            placeholder="Search.."
+            name="search-box"
+          />
+          <button
+            (click)="onClickSearch(keyword.value, categoryOptions.value)"
+            class="search-button"
+          >
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
+        </ng-container>
+      }
     </div>
 
     <div class="login-container p-0">

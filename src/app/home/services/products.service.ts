@@ -11,18 +11,21 @@ export class ProductsService {
 
   getAllProducts(query?: string): Observable<Product[]> {
     let url: string = 'http://localhost:5001/products'
-    if  (query) {
+    if (query) {
       url += '?' + query
     }
-    return this.httpClient
-      .get<Product[]>(url)
-      .pipe(
-        catchError((error) => {
-          console.log(error)
-          return throwError(
-            () => new Error('Something went wrong fetching categories.')
-          )
-        })
-      )
+    return this.httpClient.get<Product[]>(url).pipe(
+      catchError((error) => {
+        console.log(error)
+        return throwError(
+          () => new Error('Something went wrong fetching categories.')
+        )
+      })
+    )
+  }
+
+  getProduct(id: number): Observable<Product[]> {
+    const url: string = `http://localhost:5001/products/${id}`
+    return this.httpClient.get<Product[]>(url)
   }
 }
