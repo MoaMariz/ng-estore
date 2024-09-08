@@ -6,26 +6,26 @@
 
     <div class="p-0 my-4 w-50 h-25 bg-white">
       @if (navigationSearch){
-        <ng-container>
-          <select #categoryOptions class="dropdown p-0 m-0" name="dropdown">
-            @for (category of categoriesStoreItem.topLevelCategories$ | async ;
-            track category.id) {
-            <option value="{{ category.id }}">{{ category.category }}</option>
-            }
-          </select>
-          <input
-            #keyword
-            class="form-control search-box"
-            placeholder="Search.."
-            name="search-box"
-          />
-          <button
-            (click)="onClickSearch(keyword.value, categoryOptions.value)"
-            class="search-button"
-          >
-            <fa-icon [icon]="faSearch"></fa-icon>
-          </button>
-        </ng-container>
+      <ng-container>
+        <select #categoryOptions class="dropdown p-0 m-0" name="dropdown">
+          @for (category of categoriesStoreItem.topLevelCategories$ | async ;
+          track category.id) {
+          <option value="{{ category.id }}">{{ category.category }}</option>
+          }
+        </select>
+        <input
+          #keyword
+          class="form-control search-box"
+          placeholder="Search.."
+          name="search-box"
+        />
+        <button
+          (click)="onClickSearch(keyword.value, categoryOptions.value)"
+          class="search-button"
+        >
+          <fa-icon [icon]="faSearch"></fa-icon>
+        </button>
+      </ng-container>
       }
     </div>
 
@@ -35,12 +35,21 @@
       /
       <h5><a routerLink="/home">Register</a></h5>
     </div>
-    <div class="cart-wishlist">
-      <ul class="p-0">
-        <li class="list-item">
-          <fa-icon [icon]="faShoppingCart"></fa-icon>
-        </li>
-      </ul>
+    <div class="cart-wishlist p-0 list-item">
+      <button type="button" class="btn btn-dark position-relative"
+      (click)="navigateToCart()">
+        <fa-icon [icon]="faShoppingCart"></fa-icon>
+        <ng-container>
+          @if(cartService.cart$ | async) {
+          <span
+            ngIf="cartService.cart.totalProducts > 0"
+            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"
+          >
+          {{ cartService.cart.totalProducts}}
+          </span>
+          }
+        </ng-container>
+      </button>
     </div>
   </div>
 </div>

@@ -10,6 +10,7 @@ import {CategoriesStoreItem} from '../../services/categoriesStoreItem.service'
 import {AsyncPipe} from '@angular/common'
 import {SearchKeyword} from '../../../shared/types/searchKeyword.type'
 import { filter } from 'rxjs'
+import { CartService } from '../../services/cart.service'
 
 @Component({
   selector: 'app-header',
@@ -23,10 +24,12 @@ export class HeaderComponent implements OnInit {
   faUserCircle = faUserCircle
   faShoppingCart = faShoppingCart
 
-  private router = inject(Router)
   navigationSearch: boolean = true
 
-  categoriesStoreItem = inject(CategoriesStoreItem)
+  private router = inject(Router)
+  public cartService = inject(CartService)
+  public categoriesStoreItem = inject(CategoriesStoreItem)
+
   @Output()
   searchClicked: EventEmitter<SearchKeyword> = new EventEmitter<SearchKeyword>()
 
@@ -43,5 +46,9 @@ export class HeaderComponent implements OnInit {
       categoryId: parseInt(categoryId),
       keyword: keyword,
     })
+  }
+
+  navigateToCart(): void {
+    this.router.navigate(['home/cart'])
   }
 }
