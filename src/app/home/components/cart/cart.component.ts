@@ -23,4 +23,16 @@ export class CartComponent {
   navigateToHome(): void {
     this.router.navigate(['home/products'])
   }
+
+  updateQuantity($event: any, cartItem: CartItem): void {
+    if ($event.target.innerText === '+') {
+      this.cartService.addProduct(cartItem.product)
+    } else if ($event.target.innerText === '-') {
+      this.cartService.decreaseProductQuantity(cartItem)
+    }
+  }
+
+  removeItem(cartItem: CartItem): void {
+    this.cartService.removeProduct(cartItem)
+  }
 }

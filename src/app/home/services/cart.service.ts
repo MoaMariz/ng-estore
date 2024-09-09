@@ -1,4 +1,3 @@
-import {CallTracker} from 'assert'
 import {Cart, CartItem} from '../../shared/types/cart.type'
 import {Product} from '../../shared/types/products.type'
 import {Observable} from 'rxjs'
@@ -6,11 +5,26 @@ import {StoreItem} from '../../shared/data/storeItem'
 
 export class CartService extends StoreItem<Cart> {
   constructor() {
-    super({
-      products: [],
-      totalAmount: 0,
-      totalProducts: 0,
-    })
+    const isBrowser = typeof window !== 'undefined';
+
+    if (isBrowser) {
+      const storedCart: any = sessionStorage.getItem('cart');
+      if (storedCart) {
+        super(JSON.parse(storedCart));
+      } else {
+        super({
+          products: [],
+          totalAmount: 0,
+          totalProducts: 0,
+        });
+      }
+    } else {
+      super({
+        products: [],
+        totalAmount: 0,
+        totalProducts: 0,
+      });
+    }
   }
 
   get cart$(): Observable<Cart> {
@@ -31,14 +45,54 @@ export class CartService extends StoreItem<Cart> {
         ...this.cart.products,
         {
           product: product,
-          amount: product.price,
+          amount: Number(product.price),
           quantity: 1,
         },
       ]
     } else {
-        cartProduct.quantity++
+      cartProduct.quantity++
+      cartProduct.amount += Number(product.price)
     }
     this.cart.totalAmount += Number(product.price)
     ++this.cart.totalProducts
+    this.saveCart()
+  }
+
+  removeProduct(cartItem: CartItem): void {
+    this.cart.products = this.cart.products.filter(
+      (item) => item.product.id !== cartItem.product.id
+    )
+    this.cart.totalProducts -= cartItem.quantity
+    this.cart.totalAmount -= cartItem.amount
+    if(this.cart.totalProducts === 0) {
+      sessionStorage.clear()
+    } else {
+      this.saveCart()
+    }
+  }
+
+  decreaseProductQuantity(cartItem: CartItem): void {
+    const cartProduct: CartItem | undefined = this.cart.products.find(
+      (cartProduct) => cartProduct.product.id === cartItem.product.id
+    )
+
+    if (cartProduct) {
+      if (cartProduct.quantity === 1) {
+        this.removeProduct(cartItem)
+      } else {
+        cartProduct.quantity--
+        this.cart.totalAmount -= Number(cartItem.product.price)
+        --this.cart.totalProducts
+        this.saveCart()
+      }
+    }
+  }
+
+  saveCart(): void {
+    const isBrowser = typeof window !== 'undefined';
+    if (isBrowser) {
+      sessionStorage.removeItem('cart');
+      sessionStorage.setItem('cart', JSON.stringify(this.cart));
+    }
   }
 }
