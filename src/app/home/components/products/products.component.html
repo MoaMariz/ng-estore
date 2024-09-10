@@ -12,7 +12,9 @@
     <div>
       <div class="product-info">
         <h5>
-          <a routerLink="../product/{{ product.id }}">{{ product.product_name }}</a>
+          <a routerLink="../product/{{ product.id }}">{{
+            product.product_name
+          }}</a>
         </h5>
         <p class="product-price">{{ product.price | currency }}</p>
         <div><app-ratings [score]="product.ratings"></app-ratings></div>

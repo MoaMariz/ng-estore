@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core'
-import {CartService} from '../../services/cart.service'
+import {CartService} from '../../../shared/services/cart.service'
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 import {CartItem} from '../../../shared/types/cart.type'

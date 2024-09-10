@@ -6,11 +6,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 import {RouterLink, NavigationEnd, Router} from '@angular/router'
-import {CategoriesStoreItem} from '../../services/categoriesStoreItem.service'
+import {CategoriesStoreItem} from '../../../shared/services/categoriesStoreItem.service'
 import {AsyncPipe} from '@angular/common'
 import {SearchKeyword} from '../../../shared/types/searchKeyword.type'
-import { filter } from 'rxjs'
-import { CartService } from '../../services/cart.service'
+import {filter} from 'rxjs'
+import {CartService} from '../../../shared/services/cart.service'
 
 @Component({
   selector: 'app-header',
@@ -34,11 +34,11 @@ export class HeaderComponent implements OnInit {
   searchClicked: EventEmitter<SearchKeyword> = new EventEmitter<SearchKeyword>()
 
   ngOnInit(): void {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.navigationSearch = event.url === '/home/products'
-     ? true : false})
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.navigationSearch = event.url === '/home/products' ? true : false
+      })
   }
 
   onClickSearch(keyword: string, categoryId: string): void {

@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core'
 import {SidenavigationComponent} from '../sidenavigation/sidenavigation.component'
 import {ProductsComponent} from '../products/products.component'
-import {ProductStoreItem} from '../../services/productsStoreItem.service'
+import {ProductStoreItem} from '../../../shared/services/productsStoreItem.service'
 
 @Component({
   selector: 'app-products-gallery',

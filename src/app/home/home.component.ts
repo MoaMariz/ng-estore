@@ -3,12 +3,13 @@ import {HeaderComponent} from './components/header/header.component'
 import {CatnavigationComponent} from './components/catnavigation/catnavigation.component'
 import {SidenavigationComponent} from './components/sidenavigation/sidenavigation.component'
 import {ProductsComponent} from './components/products/products.component'
-import {CategoriesStoreItem} from './services/categoriesStoreItem.service'
-import {ProductStoreItem} from './services/productsStoreItem.service'
-import {ProductsService} from './services/products.service'
+import {CategoriesStoreItem} from '../shared/services/categoriesStoreItem.service'
+import {ProductStoreItem} from '../shared/services/productsStoreItem.service'
+import {ProductsService} from '../shared/services/products.service'
 import {SearchKeyword} from '../shared/types/searchKeyword.type'
-import { RouterOutlet } from '@angular/router'
-import { CartService } from './services/cart.service'
+import {RouterOutlet, NavigationEnd, Router} from '@angular/router'
+import {CartService} from '../shared/services/cart.service'
+import {filter} from 'rxjs'
 
 @Component({
   selector: 'app-home',
@@ -18,17 +19,31 @@ import { CartService } from './services/cart.service'
     CatnavigationComponent,
     SidenavigationComponent,
     ProductsComponent,
-    RouterOutlet
+    RouterOutlet,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  providers: [CategoriesStoreItem, ProductStoreItem, ProductsService, CartService],
+  providers: [
+    CategoriesStoreItem,
+    ProductStoreItem,
+    ProductsService,
+    CartService,
+  ],
 })
 export class HomeComponent implements OnInit {
-  categoryStoreItem = inject(CategoriesStoreItem)
-  productStoreItem = inject(ProductStoreItem)
-  cartService = inject(CartService)
+  private categoryStoreItem = inject(CategoriesStoreItem)
+  private productStoreItem = inject(ProductStoreItem)
+  private router = inject(Router)
 
+  constructor(){
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        if ((event as NavigationEnd).url === '/home') {
+          this.router.navigate(['/home/products'])
+        }
+      })
+  }
   ngOnInit(): void {
     this.categoryStoreItem.loadCategories()
     this.productStoreItem.loadProducts()

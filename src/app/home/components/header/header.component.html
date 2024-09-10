@@ -31,13 +31,14 @@
 
     <div class="login-container p-0">
       <fa-icon class="user-icon" [icon]="faUserCircle"></fa-icon>
-      <h5><a routerLink="/home">Sign in</a></h5>
-      /
-      <h5><a routerLink="/home">Register</a></h5>
+      <h5><a routerLink="/home/signup">Sign in</a></h5>
     </div>
     <div class="cart-wishlist p-0 list-item">
-      <button type="button" class="btn btn-dark position-relative"
-      (click)="navigateToCart()">
+      <button
+        type="button"
+        class="btn btn-dark position-relative"
+        (click)="navigateToCart()"
+      >
         <fa-icon [icon]="faShoppingCart"></fa-icon>
         <ng-container>
           @if(cartService.cart$ | async) {
@@ -45,7 +46,7 @@
             ngIf="cartService.cart.totalProducts > 0"
             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"
           >
-          {{ cartService.cart.totalProducts}}
+            {{ cartService.cart.totalProducts }}
           </span>
           }
         </ng-container>

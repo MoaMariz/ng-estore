@@ -1,7 +1,7 @@
 import {Cart, CartItem} from '../../shared/types/cart.type'
 import {Product} from '../../shared/types/products.type'
 import {Observable} from 'rxjs'
-import {StoreItem} from '../../shared/data/storeItem'
+import {StoreItem} from '../types/storeItem.type'
 
 export class CartService extends StoreItem<Cart> {
   constructor() {

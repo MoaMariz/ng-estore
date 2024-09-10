@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core'
 import {Category} from '../../../shared/types/category.type'
-import {CategoriesStoreItem} from '../../services/categoriesStoreItem.service'
+import {CategoriesStoreItem} from '../../../shared/services/categoriesStoreItem.service'
 import {CommonModule} from '@angular/common'
 import {RouterLink} from '@angular/router'
 

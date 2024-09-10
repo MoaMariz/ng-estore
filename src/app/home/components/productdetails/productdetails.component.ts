@@ -1,12 +1,12 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core'
 import {RatingsComponent} from '../ratings/ratings.component'
 import {ActivatedRoute} from '@angular/router'
-import {ProductsService} from '../../services/products.service'
+import {ProductsService} from '../../../shared/services/products.service'
 import {Product} from '../../../shared/types/products.type'
 import {Subscription} from 'rxjs'
 import { CurrencyPipe, NgIf } from '@angular/common'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import { CartService } from '../../services/cart.service'
+import { CartService } from '../../../shared/services/cart.service'
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
 
 @Component({

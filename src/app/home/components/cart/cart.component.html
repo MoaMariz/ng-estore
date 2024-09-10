@@ -59,20 +59,20 @@
       </div>
     </div>
     @if(cartService.cart.products.length){
-      <div class="col-4 px-4 py-3 my-4 cart-summary">
-        <h2 class="mb-5 mt-3">Summary</h2>
-        <div>
-          <span>Cart Total: {{ cartService.cart.totalAmount | currency }}</span>
-          <span>Shipping fees: Free!</span>
-          <hr />
-          <span class="summary-total"
-            >Total: {{ cartService.cart.totalAmount | currency }}</span
-          >
-          <hr>
-        </div>
-        <div class="btn btn-outline-dark w-100 mb-4 mt-1">Checkout</div>
+    <div class="col-4 px-4 py-3 my-4 cart-summary">
+      <h2 class="mb-5 mt-3">Summary</h2>
+      <div>
+        <span>Cart Total: {{ cartService.cart.totalAmount | currency }}</span>
+        <span>Shipping fees: Free!</span>
+        <hr />
+        <span class="summary-total"
+          >Total: {{ cartService.cart.totalAmount | currency }}</span
+        >
+        <hr />
       </div>
-    }
+      <div class="btn btn-outline-dark w-100 mb-4 mt-1">Checkout</div>
     </div>
+    }
+  </div>
 </ng-container>
 }

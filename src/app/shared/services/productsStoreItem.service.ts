@@ -1,4 +1,4 @@
-import {StoreItem} from '../../shared/data/storeItem'
+import {StoreItem} from '../types/storeItem.type'
 import {Product} from '../../shared/types/products.type'
 import {ProductsService} from './products.service'
 import {inject, Injectable} from '@angular/core'

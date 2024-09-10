@@ -2,14 +2,14 @@
   <ul>
     <li><a routerLink="/home/products">Home</a></li>
     @if (displayOptions) {
-      <ng-container>
-        @for (category of categoriesStoreItem.topLevelCategories$ | async; track
-        category.id) {
-        <li>
-          <a (click)="onCategoryClick(category)">{{ category.category }}</a>
-        </li>
-        }
-      </ng-container>
+    <ng-container>
+      @for (category of categoriesStoreItem.topLevelCategories$ | async; track
+      category.id) {
+      <li>
+        <a (click)="onCategoryClick(category)">{{ category.category }}</a>
+      </li>
+      }
+    </ng-container>
     }
   </ul>
 </div>

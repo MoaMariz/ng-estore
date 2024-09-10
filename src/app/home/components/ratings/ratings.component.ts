@@ -4,10 +4,9 @@ import {
   IconDefinition,
   faStar,
   faStarHalfStroke as faHalfStar,
-  faS,
 } from '@fortawesome/free-solid-svg-icons'
 import {faStar as faEmptyStar} from '@fortawesome/free-regular-svg-icons'
-import { NgFor } from '@angular/common'
+import {NgFor} from '@angular/common'
 
 @Component({
   selector: 'app-ratings',
@@ -26,13 +25,13 @@ export class RatingsComponent {
   private _score: number = 0
   @Input()
   set score(val: number) {
-    this._score = val > 5 ? 5 : val;
+    this._score = val > 5 ? 5 : val
     const solidStarCount: number = Math.floor(this._score)
     for (let i: number = 0; i < solidStarCount; i++) {
       this.stars.push(faStar)
     }
 
-    if(this._score - solidStarCount > 0 && this._score - solidStarCount < 1){
+    if (this._score - solidStarCount > 0 && this._score - solidStarCount < 1) {
       this.stars.push(faHalfStar)
     }
 
