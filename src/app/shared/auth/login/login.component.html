@@ -1,0 +1,49 @@
+<div class="container">
+  <form [formGroup]="userLoginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group form-group margin">
+      <label for="email">Email*</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+      />
+      @if(email?.touched && email?.invalid){
+      <span class="text-danger">Field is required</span>
+      } @if(email?.touched && email?.invalid){
+      <span class="text-danger">Email is not valid</span>
+      }
+    </div>
+
+    <div class="form-group form-group-margin">
+      <label for="password">Password*</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+      />
+      @if(password?.touched && password?.invalid){
+
+      <span class="text-danger">Field is required</span>
+      }
+    </div>
+    <div class="text-center form-group-margin">
+      <button
+        type="submit"
+        class="btn btn-warning"
+        [disabled]="!userLoginForm.valid"
+      >
+        Sign in
+      </button>
+    </div>
+
+    <div class="text-center form-group-margin">
+      <button type="button" class="btn btn-warning" routerLink="../signup">Register</button>
+    </div>
+    @if(alertMessage !== ''){
+      <div class="alert" [ngClass]="alertType === 0 ? 'alert-success' : 'alert-danger'">{{ alertMessage }}</div>
+    }
+  </form>
+
+</div>

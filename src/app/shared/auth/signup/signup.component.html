@@ -1,6 +1,7 @@
 <div class="container">
   <div class="text-center">
-    <h2>Sign Up</h2>
+    <h2>Welcome on board!</h2>
+    <h2 class="mb-5">Sign Up</h2>
   </div>
 
   <form [formGroup]="userSignupForm" (ngSubmit)="onSubmit()">
@@ -11,9 +12,10 @@
           type="text"
           class="form-control"
           id="firstName"
+          name="firstName"
           formControlName="firstName"
         />
-        @if(firstName?.touched && firstName?.errors?.["required"]){
+        @if(firstName?.touched && firstName?.invalid){
 
         <span class="text-danger">Field is required</span>
         }
@@ -25,9 +27,10 @@
           type="text"
           class="form-control"
           id="lastName"
+          name="lastName"
           formControlName="lastName"
         />
-        @if(lastName?.touched && lastName?.errors?.["required"]){
+        @if(lastName?.touched && lastName?.invalid){
 
         <span class="text-danger">Field is required</span>
         }
@@ -39,6 +42,7 @@
           type="text"
           class="form-control"
           id="address"
+          name="address"
           formControlName="address"
         />
       </div>
@@ -91,10 +95,10 @@
           id="email"
           formControlName="email"
         />
-        @if(email?.touched && email?.errors?.["required"]){
+        @if(email?.touched && email?.invalid){
 
         <span class="text-danger">Field is required</span>
-        } @if(email?.touched && email?.errors?.["email"]){
+        } @if(email?.touched && email?.invalid){
 
         <span class="text-danger">Email is not valid</span>
         }
@@ -108,7 +112,7 @@
           id="password"
           formControlName="password"
         />
-        @if(password?.touched && password?.errors?.["required"]){
+        @if(password?.touched && password?.invalid){
 
         <span class="text-danger">Field is required</span>
         }
@@ -122,17 +126,21 @@
           id="confirmPassword"
           formControlName="confirmPassword"
         />
-        @if(confirmPassword?.touched && confirmPassword?.errors?.["required"]){
+        @if(confirmPassword?.touched && confirmPassword?.invalid){
 
         <span class="text-danger">Field is required</span>
         } @if(confirmPassword?.touched &&
-        userSignupForm.errors?.["passwordMismatch"]){
+        userSignupForm.invalid){
 
         <span class="text-danger">Passwords don't match</span>
         }
       </div>
     </div>
     <div class="text-center form-group-margin">
+      <button type="reset" class="btn btn-warning m-3" (click)="onReset()">
+        Reset
+      </button>
+
       <button
         type="submit"
         class="btn btn-warning"
@@ -142,16 +150,18 @@
       </button>
     </div>
     @if(alertMessage !== '') {
-      <div
-        class="alert"
-        [ngClass]="
-          alertType === 0
-            ? 'alert-success'
-            : alertType === 1
-            ? 'alert-warning'
-            : 'alert-danger'
-        "
-      >{{ alertMessage }}</div>
+    <div
+      class="alert"
+      [ngClass]="
+        alertType === 0
+          ? 'alert-success'
+          : alertType === 1
+          ? 'alert-warning'
+          : 'alert-danger'
+      "
+    >
+      {{ alertMessage }}
+    </div>
     }
   </form>
 </div>

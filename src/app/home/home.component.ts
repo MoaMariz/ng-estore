@@ -10,6 +10,7 @@ import {SearchKeyword} from '../shared/types/searchKeyword.type'
 import {RouterOutlet, NavigationEnd, Router} from '@angular/router'
 import {CartService} from '../shared/services/cart.service'
 import {filter} from 'rxjs'
+import { UserService } from '../shared/services/userService.service'
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ import {filter} from 'rxjs'
     ProductStoreItem,
     ProductsService,
     CartService,
+    UserService
   ],
 })
 export class HomeComponent implements OnInit {

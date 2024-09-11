@@ -3,10 +3,10 @@ import {AbstractControl, ValidatorFn, ValidationErrors} from '@angular/forms'
 export const matchPasswords: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
-  const password = control.get('password')
-  const confirmPassword = control.get('confirmPassword')
-  if (password?.value !== confirmPassword?.value) {
-    return {passwordMismatch: true}
+  const password = control.get('password')?.value
+  const confirmPassword = control.get('confirmPassword')?.value
+  if (password === confirmPassword) {
+    return null
   }
-  return null
+  return {passwordMismatch: true}
 }
