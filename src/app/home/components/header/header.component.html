@@ -29,10 +29,29 @@
       }
     </div>
 
+    @if(!isUserAuthenticated){
     <div class="login-container p-0">
       <fa-icon class="user-icon" [icon]="faUserCircle"></fa-icon>
-      <h5><a routerLink="/home/login">Sign in</a></h5>
+      <h5><a routerLink="/home/login">Sign in / Register</a></h5>
     </div>
+    } @if(isUserAuthenticated){
+    <div class="user-container">
+      <div class="dropdown user-dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle user-dropdown-button"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <fa-icon class="user-icon" [icon]="faUserCircle"></fa-icon>
+          {{ userName }}
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    }
     <div class="cart-wishlist p-0 list-item">
       <button
         type="button"

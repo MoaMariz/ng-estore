@@ -15,7 +15,16 @@ export interface Login {
     password: string
 }
 
+export interface LoggedUser {
+    firstName: string
+    lastName: string
+    address: string 
+    country: string 
+    city: string
+}
+
 export interface LoginToken {
     token: string
     expirationTime: number
+    user: LoggedUser
 }

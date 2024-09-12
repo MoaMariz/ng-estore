@@ -1,4 +1,4 @@
-import {Component, inject, EventEmitter, Output, OnInit} from '@angular/core'
+import {Component, inject, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core'
 import {
   faSearch,
   faUserCircle,
@@ -9,8 +9,9 @@ import {RouterLink, NavigationEnd, Router} from '@angular/router'
 import {CategoriesStoreItem} from '../../../shared/services/categoriesStoreItem.service'
 import {AsyncPipe} from '@angular/common'
 import {SearchKeyword} from '../../../shared/types/searchKeyword.type'
-import {filter} from 'rxjs'
+import {filter, Subscription} from 'rxjs'
 import {CartService} from '../../../shared/services/cart.service'
+import { UserService } from '../../../shared/services/userService.service'
 
 @Component({
   selector: 'app-header',
@@ -19,16 +20,20 @@ import {CartService} from '../../../shared/services/cart.service'
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   faSearch = faSearch
   faUserCircle = faUserCircle
   faShoppingCart = faShoppingCart
 
   navigationSearch: boolean = true
+  isUserAuthenticated: boolean = false
+  userName: string = ''
 
   private router = inject(Router)
   public cartService = inject(CartService)
   public categoriesStoreItem = inject(CategoriesStoreItem)
+  public userService = inject(UserService)
+  subscription: Subscription = new Subscription()
 
   @Output()
   searchClicked: EventEmitter<SearchKeyword> = new EventEmitter<SearchKeyword>()
@@ -39,6 +44,22 @@ export class HeaderComponent implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.navigationSearch = event.url === '/home/products' ? true : false
       })
+
+    this.subscription.add(this.userService.isUserAuthenticated$.subscribe((result) => {
+      this.isUserAuthenticated = result
+    }))
+
+    this.subscription.add(this.userService.loggedUser$.subscribe((result) => {
+      this.userName = result.firstName
+    }))
+  }
+
+  ngOnDestroy(): void {
+      this.subscription.unsubscribe()
+  }
+
+  logout(): void {
+    this.userService.logout()
   }
 
   onClickSearch(keyword: string, categoryId: string): void {
