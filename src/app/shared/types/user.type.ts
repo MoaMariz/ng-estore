@@ -21,6 +21,7 @@ export interface LoggedUser {
     address: string 
     country: string 
     city: string
+    email: string
 }
 
 export interface LoginToken {

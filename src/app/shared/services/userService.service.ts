@@ -14,6 +14,7 @@ export class UserService {
   )
   private isBrowser: boolean
   private autoLogoutTimer: any
+  private authToken: string
 
   httpClient = inject(HttpClient)
 
@@ -34,6 +35,10 @@ export class UserService {
 
   get loggedUser$(): Observable<LoggedUser> {
     return this.loggedUser.asObservable()
+  }
+
+  get token(): string {
+    return this.authToken
   }
 
   createUser(user: User): Observable<any> {
@@ -77,6 +82,7 @@ export class UserService {
           const address: string | null = localStorage.getItem('address')
           const country: string | null = localStorage.getItem('country')
           const city: string | null = localStorage.getItem('city')
+          const email: string | null = localStorage.getItem('email')
 
           const user: LoggedUser = {
             firstName: firstName !== null ? firstName : '',
@@ -84,11 +90,13 @@ export class UserService {
             address: address !== null ? address : '',
             country: country !== null ? country : '',
             city: city !== null ? city : '',
+            email: email !== null ? email : '',
           }
 
           this.isAuthenticated.next(true)
           this.loggedUser.next(user)
           this.setAutoLogoutTimer(expiresIn)
+          this.authToken = token
         } else {
           this.logout()
         }
@@ -98,7 +106,6 @@ export class UserService {
 
   activateToken(token: LoginToken): void {
     if (this.isBrowser) {
-      token.expirationTime = 10
       localStorage.setItem('token', token.token)
       localStorage.setItem(
         'expirationTime',
@@ -109,10 +116,12 @@ export class UserService {
       localStorage.setItem('address', token.user.address)
       localStorage.setItem('country', token.user.country)
       localStorage.setItem('city', token.user.city)
+      localStorage.setItem('email', token.user.email)
     }
 
     this.isAuthenticated.next(true)
     this.loggedUser.next(token.user)
     this.setAutoLogoutTimer(token.expirationTime * 1000)
+    this.authToken = token.token
   }
 }

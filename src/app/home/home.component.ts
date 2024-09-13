@@ -11,6 +11,7 @@ import {RouterOutlet, NavigationEnd, Router} from '@angular/router'
 import {CartService} from '../shared/services/cart.service'
 import {filter} from 'rxjs'
 import { UserService } from '../shared/services/userService.service'
+import { OrderService } from '../shared/services/order.service'
 
 @Component({
   selector: 'app-home',
@@ -29,13 +30,15 @@ import { UserService } from '../shared/services/userService.service'
     ProductStoreItem,
     ProductsService,
     CartService,
-    UserService
+    UserService,
+    OrderService
   ],
 })
 export class HomeComponent implements OnInit {
   private categoryStoreItem = inject(CategoriesStoreItem)
   private productStoreItem = inject(ProductStoreItem)
   private router = inject(Router)
+
 
   constructor(){
     this.router.events
