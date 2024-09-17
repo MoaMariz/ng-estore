@@ -14,3 +14,22 @@ export interface Order {
     userEmail: string
     orderDetails: OrderItem[]
 }
+
+export interface PastOrder {
+    orderId: number
+    userName: string
+    address: string
+    country: string
+    city: string
+    total: number
+    orderDate: string
+}
+
+export interface PastOrderProduct {
+    amount: number
+    price: number
+    productId: number
+    productImage: string
+    productName: string
+    qty: number
+}

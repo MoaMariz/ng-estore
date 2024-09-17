@@ -5,6 +5,7 @@ import { CartComponent } from './components/cart/cart.component'
 import { SignupComponent } from '../shared/auth/signup/signup.component'
 import path from 'path'
 import { LoginComponent } from '../shared/auth/login/login.component'
+import { PastordersComponent } from './components/pastorders/pastorders.component'
 
 export const routes: Routes = [
       {
@@ -26,5 +27,9 @@ export const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent
+      },
+      {
+        path: 'pastorders',
+        component: PastordersComponent
       }
 ]

@@ -69,6 +69,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     })
   }
 
+  pastOrders(): void {
+    this.router.navigate(['home/pastorders'])
+  }
+  
   navigateToCart(): void {
     this.router.navigate(['home/cart'])
   }

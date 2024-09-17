@@ -1,10 +1,11 @@
 import {inject, Injectable} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
-import {Observable} from 'rxjs'
+import {Observable, PartialObserver} from 'rxjs'
 import {CartService} from './cart.service'
 import {OrderItem, Order} from '../types/order.type'
 import {DeliveryAddress} from '../types/cart.type'
 import {UserService} from './userService.service'
+import { PastOrder, PastOrderProduct } from '../types/order.type'
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +42,18 @@ export class OrderService {
     return this.httpClient.post(url, order, {
       headers: {authorization: this.userService.token}
     })
+  }
+
+  getOrders(userEmail: string): Observable<PastOrder[]> {
+    const url: string = `http://localhost:5001/orders/allorders?userEmail=${userEmail}`
+
+    return this.httpClient.get<PastOrder[]>(url, {headers: {authorization: this.userService.token}})
+  }
+
+  getOrderProduct(orderId: string): Observable<PastOrderProduct[]> {
+    const url: string = `http://localhost:5001/orders/orderproducts?orderId=${orderId}`
+
+    return this.httpClient.get<PastOrderProduct[]>(url, {headers: {authorization: this.userService.token}})
   }
   
   
