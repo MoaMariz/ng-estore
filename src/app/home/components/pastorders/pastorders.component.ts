@@ -23,12 +23,11 @@ export class PastordersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription.add(
-      this.orderService
-        .getOrders(this.userService.loggedInUser.email)
-        .subscribe((pastOrders) => {
-          this.pastOrders = pastOrders
-        })
-    )
+      this.orderService.getOrders(this.userService.loggedInUser.email)
+    .subscribe({
+      next: pastOrders => this.pastOrders = pastOrders,
+      error: error => console.error('Error fetching past orders:', error)
+    }))
   }
 
   ngOnDestroy(): void {

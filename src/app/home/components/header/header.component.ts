@@ -1,4 +1,11 @@
-import {Component, inject, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core'
+import {
+  Component,
+  inject,
+  EventEmitter,
+  Output,
+  OnInit,
+  OnDestroy,
+} from '@angular/core'
 import {
   faSearch,
   faUserCircle,
@@ -11,7 +18,7 @@ import {AsyncPipe} from '@angular/common'
 import {SearchKeyword} from '../../../shared/types/searchKeyword.type'
 import {filter, Subscription} from 'rxjs'
 import {CartService} from '../../../shared/services/cart.service'
-import { UserService } from '../../../shared/services/userService.service'
+import {UserService} from '../../../shared/services/userService.service'
 
 @Component({
   selector: 'app-header',
@@ -45,17 +52,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.navigationSearch = event.url === '/home/products' ? true : false
       })
 
-    this.subscription.add(this.userService.isUserAuthenticated$.subscribe((result) => {
-      this.isUserAuthenticated = result
-    }))
+    this.subscription.add(
+      this.userService.isUserAuthenticated$.subscribe((result) => {
+        this.isUserAuthenticated = result
+      })
+    )
 
-    this.subscription.add(this.userService.loggedUser$.subscribe((result) => {
-      this.userName = result.firstName
-    }))
+    this.subscription.add(
+      this.userService.loggedUser$.subscribe((result) => {
+        this.userName = result.firstName
+      })
+    )
   }
 
   ngOnDestroy(): void {
-      this.subscription.unsubscribe()
+    this.subscription.unsubscribe()
   }
 
   logout(): void {
@@ -72,7 +83,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   pastOrders(): void {
     this.router.navigate(['home/pastorders'])
   }
-  
+
   navigateToCart(): void {
     this.router.navigate(['home/cart'])
   }

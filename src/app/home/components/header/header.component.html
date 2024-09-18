@@ -46,10 +46,10 @@
           <fa-icon class="user-icon" [icon]="faUserCircle"></fa-icon>
           {{ userName }}
         </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" (click)="pastOrders()">Previous Orders</a></li>
-          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-        </ul>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" (click)="pastOrders()">Previous Orders</a>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
+        </div>
       </div>
     </div>
     }

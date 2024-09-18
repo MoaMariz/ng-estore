@@ -4,7 +4,7 @@
     <select class="form-select" (change)="selectOrder($event)">
       <option value="0" selected>Please select value</option>
       @for(pastOrder of pastOrders; track $index){
-      <option value={{ pastOrder.orderId }}>
+      <option value="{{ pastOrder.orderId }}">
         {{ pastOrder.orderId }} Date: {{ pastOrder.orderDate }}
       </option>
       }
