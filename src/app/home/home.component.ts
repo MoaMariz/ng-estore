@@ -10,7 +10,6 @@ import {SearchKeyword} from '../shared/types/searchKeyword.type'
 import {RouterOutlet, NavigationEnd, Router} from '@angular/router'
 import {CartService} from '../shared/services/cart.service'
 import {filter} from 'rxjs'
-import { UserService } from '../shared/services/userService.service'
 import { OrderService } from '../shared/services/order.service'
 
 @Component({
@@ -30,7 +29,6 @@ import { OrderService } from '../shared/services/order.service'
     ProductStoreItem,
     ProductsService,
     CartService,
-    UserService,
     OrderService
   ],
 })
