@@ -1,9 +1,9 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core'
+import {Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core'
 import {PastOrder, PastOrderProduct} from '../../../shared/types/order.type'
 import {CurrencyPipe} from '@angular/common'
 import {OrderService} from '../../../shared/services/order.service'
 import {UserService} from '../../../shared/services/userService.service'
-import {Subscription} from 'rxjs'
+import {Subscription, lastValueFrom} from 'rxjs'
 
 @Component({
   selector: 'app-pastorders',
@@ -21,13 +21,13 @@ export class PastordersComponent implements OnInit, OnDestroy {
   pastOrder: PastOrder
   pastOrders: PastOrder[] = []
 
-  ngOnInit(): void {
-    this.subscription.add(
-      this.orderService.getOrders(this.userService.loggedInUser.email)
-    .subscribe({
-      next: pastOrders => this.pastOrders = pastOrders,
-      error: error => console.error('Error fetching past orders:', error)
-    }))
+  async ngOnInit(): Promise<void> {
+    try {
+      const pastOrders = await lastValueFrom(this.orderService.getOrders(this.userService.loggedInUser.email));
+      this.pastOrders = pastOrders;
+    } catch (error) {
+      console.error('Error fetching past orders:', error);
+    }
   }
 
   ngOnDestroy(): void {
@@ -35,12 +35,25 @@ export class PastordersComponent implements OnInit, OnDestroy {
   }
 
   selectOrder(event: any): void {
-    if (Number.parseInt(event.target.value) > 0) {
-      this.pastOrder = this.pastOrders.filter(
-        order => order.orderId === Number.parseInt(event.target.value)
-      )[0]
+    const orderId = Number.parseInt(event.target.value);
+    if (orderId > 0) {
+      const selectedOrder = this.pastOrders.find(order => order.orderId === orderId);
+  
+      if (selectedOrder) {
+        this.pastOrder = selectedOrder;
+  
+        this.orderService.getOrderProduct(orderId.toString())
+          .subscribe({
+            next: products => this.pastOrderProducts = products,
+            error: error => console.error('Error fetching order products:', error)
+          });
+      } else {
+        this.pastOrder = <any>undefined;
+        this.pastOrderProducts = [];
+      }
     } else {
-      this.pastOrder = <any>undefined
+      this.pastOrder = <any>undefined;
+      this.pastOrderProducts = [];
     }
   }
 }

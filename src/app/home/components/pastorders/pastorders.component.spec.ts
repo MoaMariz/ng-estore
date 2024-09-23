@@ -1,118 +1,93 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing'
-import {PastordersComponent} from './pastorders.component'
-import {OrderService} from '../../../shared/services/order.service'
-import {UserService} from '../../../shared/services/userService.service'
-import {of} from 'rxjs'
-import {PastOrder} from '../../../shared/types/order.type'
-import {CurrencyPipe} from '@angular/common'
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { PastordersComponent } from './pastorders.component';
+import { OrderService } from '../../../shared/services/order.service';
+import { UserService } from '../../../shared/services/userService.service';
+import { of, throwError } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CurrencyPipe } from '@angular/common';
+import { By } from '@angular/platform-browser';
+import { LoggedUser } from '../../../shared/types/user.type';
 
-describe('PastordersComponent', () => {
-  let component: PastordersComponent
-  let fixture: ComponentFixture<PastordersComponent>
-  let orderService: jasmine.SpyObj<OrderService> // Agora a tipagem é como espião
-  let userService: UserService
+fdescribe('PastordersComponent', () => {
+  let component: PastordersComponent;
+  let fixture: ComponentFixture<PastordersComponent>;
+  let orderService: OrderService;
+  let userService: UserService;
 
-  beforeEach(async () => {
-    const orderServiceSpy = jasmine.createSpyObj('OrderService', ['getOrders']) // Corrigido para incluir getOrders como espião
-    const userServiceSpy = jasmine.createSpyObj('UserService', [], {
-      loggedInUser: {email: 'test@example.com'},
-    })
+  const mockOrders = [
+    { orderId: 1, userName: 'John', address: '123 St', country: 'USA', city: 'NY', total: 100, orderDate: '2024-09-19' },
+    { orderId: 2, userName: 'Doe', address: '456 St', country: 'USA', city: 'LA', total: 150, orderDate: '2024-08-19' }
+  ];
 
-    await TestBed.configureTestingModule({
-      imports: [CurrencyPipe, PastordersComponent],
-      declarations: [],
-      providers: [
-        {provide: OrderService, useValue: orderServiceSpy},
-        {provide: UserService, useValue: userServiceSpy},
-      ],
-    }).compileComponents()
+const mockUser: LoggedUser = {
+    firstName: 'John',
+    lastName: 'Doe',
+    address: '123 Main St',
+    country: 'USA',
+    city: 'New York',
+    email: 'test@test.com'
+  };
 
-    fixture = TestBed.createComponent(PastordersComponent)
-    component = fixture.componentInstance
-    orderService = TestBed.inject(OrderService) as jasmine.SpyObj<OrderService> // Agora é espião
-    userService = TestBed.inject(UserService)
-  })
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [],
+      declarations: [PastordersComponent],
+      providers: [OrderService, UserService, CurrencyPipe, HttpClientTestingModule]
+    });
 
-  // 1. Teste para verificar se os pedidos são carregados corretamente na inicialização
-  it('should fetch past orders on initialization', () => {
-    const mockOrders: PastOrder[] = [
-      {
-        orderId: 1,
-        userName: 'User 1',
-        address: 'Address 1',
-        country: 'Country 1',
-        city: 'City 1',
-        total: 100,
-        orderDate: '2024-09-01',
-      },
-      {
-        orderId: 2,
-        userName: 'User 2',
-        address: 'Address 2',
-        country: 'Country 2',
-        city: 'City 2',
-        total: 200,
-        orderDate: '2024-09-02',
-      },
-    ]
+    fixture = TestBed.createComponent(PastordersComponent);
+    component = fixture.componentInstance;
+    orderService = TestBed.inject(OrderService);
+    userService = TestBed.inject(UserService);
 
-    // Configura o método getOrders como espião retornando um valor mock
-    orderService.getOrders.and.returnValue(of(mockOrders))
+    // Mocking loggedInUser email in the UserService
+    spyOnProperty(userService, 'loggedInUser', 'get').and.returnValue(mockUser);
+  });
 
-    component.ngOnInit()
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
 
-    expect(component.pastOrders).toEqual(mockOrders)
-    expect(orderService.getOrders).toHaveBeenCalledWith(
-      userService.loggedInUser.email
-    )
-  })
+  it('should fetch past orders on ngOnInit', () => {
+    spyOn(orderService, 'getOrders').and.returnValue(of(mockOrders));
 
-  // 2. Teste para verificar se a assinatura é removida na destruição
-  it('should unsubscribe on destroy', () => {
-    const subscriptionSpy = spyOn(component.subscription, 'unsubscribe')
+    component.ngOnInit();
+    expect(orderService.getOrders).toHaveBeenCalledWith(mockUser.email);
+    expect(component.pastOrders).toEqual(mockOrders);
+  });
 
-    component.ngOnDestroy()
+  it('should handle error when fetching orders fails', () => {
+    const consoleSpy = spyOn(console, 'error');
+    spyOn(orderService, 'getOrders').and.returnValue(throwError('Error fetching orders'));
 
-    expect(subscriptionSpy).toHaveBeenCalled()
-  })
+    component.ngOnInit();
+    expect(consoleSpy).toHaveBeenCalledWith('Error fetching past orders:', 'Error fetching orders');
+  });
 
-  // 3. Teste para verificar se o pedido é selecionado corretamente
-  it('should select order by id', () => {
-    const mockOrders: PastOrder[] = [
-      {
-        orderId: 1,
-        userName: 'User 1',
-        address: 'Address 1',
-        country: 'Country 1',
-        city: 'City 1',
-        total: 100,
-        orderDate: '2024-09-01',
-      },
-      {
-        orderId: 2,
-        userName: 'User 2',
-        address: 'Address 2',
-        country: 'Country 2',
-        city: 'City 2',
-        total: 200,
-        orderDate: '2024-09-02',
-      },
-    ]
+  it('should select an order based on event value', () => {
+    component.pastOrders = mockOrders;
 
-    component.pastOrders = mockOrders
+    const event = { target: { value: '1' } };
+    component.selectOrder(event);
+    expect(component.pastOrder.orderId).toEqual(1);
 
-    const event = {target: {value: mockOrders[0].orderId.toString()}}
-    component.selectOrder(event)
+    const invalidEvent = { target: { value: '0' } };
+    component.selectOrder(invalidEvent);
+    expect(component.pastOrder).toBeUndefined();
+  });
 
-    expect(component.pastOrder).toEqual(mockOrders[0])
-  })
+  it('should unsubscribe on ngOnDestroy', () => {
+    const unsubscribeSpy = spyOn(component.subscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(unsubscribeSpy).toHaveBeenCalled();
+  });
 
-  // 4. Teste para verificar se pastOrder é definido como indefinido ao selecionar valor inválido
-  it('should set pastOrder to undefined when value is 0', () => {
-    const event = {target: {value: '0'}}
+  it('should display the correct number of options in the select element', () => {
+    component.pastOrders = mockOrders;
+    fixture.detectChanges();
 
-    component.selectOrder(event)
-
-    expect(component.pastOrder).toBeUndefined()
-  })
-})
+    const options = fixture.debugElement.queryAll(By.css('option'));
+    expect(options.length).toBe(3); // 2 orders + default "Please select"
+    expect(options[1].nativeElement.textContent).toContain('1 Date: 2024-09-19');
+  });
+});

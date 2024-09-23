@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private router = inject(Router)
   public cartService = inject(CartService)
   public categoriesStoreItem = inject(CategoriesStoreItem)
-  public userService = inject(UserService)
+  private userService = inject(UserService)
   subscription: Subscription = new Subscription()
 
   @Output()

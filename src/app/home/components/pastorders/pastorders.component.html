@@ -4,15 +4,15 @@
     <select class="form-select" (change)="selectOrder($event)">
       <option value="0" selected>Please select value</option>
       @for(pastOrder of pastOrders; track $index){
-      <option value="{{ pastOrder.orderId }}">
+      <option value="{{ pastOrder.orderId }}">Order 
         {{ pastOrder.orderId }} Date: {{ pastOrder.orderDate }}
       </option>
       }
     </select>
   </div>
 </div>
-@if (pastOrder)
-{<div class="row my-5 fc-main-div">
+@if (pastOrder){
+<div class="row my-5 fc-main-div">
   <div class="col-8 p-4">
     @for (product of pastOrderProducts; track $index){
     <div class="row order-item-card">
