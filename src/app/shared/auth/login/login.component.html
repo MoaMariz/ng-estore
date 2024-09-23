@@ -39,7 +39,8 @@
     </div>
 
     <div class="text-center form-group-margin">
-      <button type="button" class="btn btn-warning" routerLink="../signup">Register</button>
+      <span>Doens't have an account? </span>
+      <a routerLink="../signup">Register</a>
     </div>
     @if(alertMessage !== ''){
       <div class="alert" [ngClass]="alertType === 0 ? 'alert-success' : 'alert-danger'">{{ alertMessage }}</div>
