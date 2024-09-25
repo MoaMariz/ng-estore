@@ -5,6 +5,7 @@ import {Category} from '../../../shared/types/category.type'
 import {RouterLink} from '@angular/router'
 import {NavigationEnd, Router} from '@angular/router'
 import {filter} from 'rxjs'
+import { ProductStoreItem } from '../../../shared/services/productsStoreItem.service'
 
 @Component({
   selector: 'app-catnavigation',
@@ -17,6 +18,7 @@ export class CatnavigationComponent implements OnInit {
   @Output()
   categoryClicked: EventEmitter<number> = new EventEmitter<number>()
   categoriesStoreItem = inject(CategoriesStoreItem)
+  productStoreItem = inject(ProductStoreItem)
 
   displayOptions: boolean = true
   private router = inject(Router)
@@ -31,5 +33,9 @@ export class CatnavigationComponent implements OnInit {
 
   onCategoryClick(category: Category): void {
     this.categoryClicked.emit(category.id)
+  }
+
+  onHomeClick(): void {
+    this.productStoreItem.loadProducts()
   }
 }

@@ -1,6 +1,6 @@
 <div class="navigation-container">
   <ul>
-    <li><a routerLink="/home/products">Home</a></li>
+    <li><a routerLink="/home/products" (click)="onHomeClick()">Home</a></li>
     @if (displayOptions) {
     <ng-container>
       @for (category of categoriesStoreItem.topLevelCategories$ | async; track
